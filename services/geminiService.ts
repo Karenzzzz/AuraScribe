@@ -91,37 +91,34 @@ ${journalTexts.join('\n---\n')}
 
 export const analyzeJournalEntry = async (journalText: string): Promise<AuraAnalysis> => {
     try {
-        // FIX: Use process.env.API_KEY and initialize GoogleGenAI as per guidelines.
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: getPrompt(journalText),
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: analysisSchema,
-                temperature: 0.7,
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
+            // FIX 1: Pass the actual variable, not a hardcoded string
+            body: JSON.stringify({ journalText: journalText }) 
         });
-        
-        if (!response.text) {
-             throw new Error("Received an empty response from the AI.");
+
+        if (!response.ok) {
+             throw new Error(`Server error: ${response.status}`);
         }
 
-        const jsonText = response.text.trim();
-        const parsedData = JSON.parse(jsonText);
-
-        return parsedData as AuraAnalysis;
+        // FIX 2: The server will return the clean JSON object directly
+        const data = await response.json();
+        
+        return data as AuraAnalysis;
 
     } catch (error) {
-        console.error("Error calling Gemini API:", error);
+        console.error("Error calling API:", error);
         throw new Error("Failed to get analysis from AI service.");
     }
 };
 
 export const analyzeTimePeriod = async (journalTexts: string[], period: string): Promise<AggregatedAuraAnalysis> => {
     try {
-        // FIX: Use process.env.API_KEY and initialize GoogleGenAI as per guidelines.
+        // FIX: Per coding guidelines, initialize GoogleGenAI with process.env.API_KEY directly.
+        // The API key's availability is assumed to be handled by the execution environment.
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         
         const response = await ai.models.generateContent({
