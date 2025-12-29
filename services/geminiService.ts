@@ -2,14 +2,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { AuraAnalysis, AggregatedAuraAnalysis } from "../types";
 
-const API_KEY = process.env.API_KEY;
-
-if (!API_KEY) {
-    throw new Error("API_KEY environment variable not found.");
-}
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
-
 const analysisSchema = {
     type: Type.OBJECT,
     properties: {
@@ -99,6 +91,12 @@ ${journalTexts.join('\n---\n')}
 
 export const analyzeJournalEntry = async (journalText: string): Promise<AuraAnalysis> => {
     try {
+        const API_KEY = process.env.API_KEY;
+        if (!API_KEY) {
+            throw new Error("API_KEY environment variable not set.");
+        }
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
+
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
             contents: getPrompt(journalText),
@@ -126,6 +124,12 @@ export const analyzeJournalEntry = async (journalText: string): Promise<AuraAnal
 
 export const analyzeTimePeriod = async (journalTexts: string[], period: string): Promise<AggregatedAuraAnalysis> => {
     try {
+        const API_KEY = process.env.API_KEY;
+        if (!API_KEY) {
+            throw new Error("API_KEY environment variable not set.");
+        }
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
+        
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
             contents: getAggregatedPrompt(journalTexts, period),
