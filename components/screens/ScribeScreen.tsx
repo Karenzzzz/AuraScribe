@@ -64,7 +64,8 @@ export const ScribeScreen: React.FC<ScribeScreenProps> = ({ onAddEntry }) => {
 
     } catch (err) {
       console.error(err);
-      setError('Failed to analyze the journal entry. Please check your API key and try again.');
+      // FIX: Updated error message to not mention API key, as per guidelines.
+      setError('Failed to analyze the journal entry. Please try again.');
     } finally {
       setIsLoading(false);
     }
