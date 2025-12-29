@@ -1,0 +1,5 @@
+{
+  "name": "AuraScribe",
+  "description": "A daily journaling app that uses AI to analyze your entries, providing insights into your emotional and energetic state through six key metrics and a daily Tarot card reading.",
+  "requestFramePermissions": []
+}
