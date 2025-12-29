@@ -91,7 +91,7 @@ ${journalTexts.join('\n---\n')}
 
 export const analyzeJournalEntry = async (journalText: string): Promise<AuraAnalysis> => {
     try {
-        // FIX: Use process.env.API_KEY and remove manual check, as per Gemini API guidelines.
+        // FIX: Use process.env.API_KEY as per coding guidelines and remove local API key management.
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
         const response = await ai.models.generateContent({
@@ -121,7 +121,7 @@ export const analyzeJournalEntry = async (journalText: string): Promise<AuraAnal
 
 export const analyzeTimePeriod = async (journalTexts: string[], period: string): Promise<AggregatedAuraAnalysis> => {
     try {
-        // FIX: Use process.env.API_KEY and remove manual check, as per Gemini API guidelines.
+        // FIX: Use process.env.API_KEY as per coding guidelines and remove local API key management.
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         
         const response = await ai.models.generateContent({
